@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Auth\RoleController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\DevController;
@@ -23,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+/*Roles*/ 
+Route::post('auth/role', [RoleController::class, 'register']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', [LoginController::class, 'logout']);
@@ -45,6 +49,7 @@ Route::post('product/register', [ProductController:: class, 'register']);
 Route::put('product/update/{id}', [ProductController:: class, 'update']);
 Route::delete('product/delete/{id}', [ProductController:: class, 'destroy']);
 Route::post('product/addImage/{id}', [ProductController:: class, 'addImage']);
+
 
 Route::group(['middleware' => 'guest:api'], function () {
     Route::post('login', [LoginController::class, 'login']);

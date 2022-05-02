@@ -11,13 +11,13 @@ class RegisterTest extends TestCase
     public function can_register()
     {
         $this->postJson('/api/register', [
-            'name' => 'Test User',
+            'user_name' => 'Test User',
             'email' => 'test@test.app',
             'password' => 'secret',
             'password_confirmation' => 'secret',
         ])
             ->assertSuccessful()
-            ->assertJsonStructure(['id', 'name', 'email']);
+            ->assertJsonStructure(['id', 'user_name', 'email']);
     }
 
     /** @test */
@@ -26,7 +26,7 @@ class RegisterTest extends TestCase
         User::factory()->create(['email' => 'test@test.app']);
 
         $this->postJson('/api/register', [
-            'name' => 'Test User',
+            'user_name' => 'Test User',
             'email' => 'test@test.app',
             'password' => 'secret',
             'password_confirmation' => 'secret',

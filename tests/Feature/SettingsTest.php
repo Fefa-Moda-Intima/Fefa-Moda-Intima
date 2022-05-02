@@ -13,15 +13,15 @@ class SettingsTest extends TestCase
     {
         $this->actingAs($user = User::factory()->create())
             ->patchJson('/api/settings/profile', [
-                'name' => 'Test User',
+                'user_name' => 'Test User',
                 'email' => 'test@test.app',
             ])
             ->assertSuccessful()
-            ->assertJsonStructure(['id', 'name', 'email']);
+            ->assertJsonStructure(['id', 'user_name', 'email']);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'name' => 'Test User',
+            'user_name' => 'Test User',
             'email' => 'test@test.app',
         ]);
     }

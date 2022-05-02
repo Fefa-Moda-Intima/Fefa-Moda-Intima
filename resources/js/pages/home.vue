@@ -55,6 +55,7 @@ export default {
         this.$store.dispatch("developer/fetchDev");
       }
     },
+    
     handleClick(id){
       this.$router.push('dev/detail/' + id);
     }

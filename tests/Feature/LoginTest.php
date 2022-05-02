@@ -27,7 +27,7 @@ class LoginTest extends TestCase
         $this->actingAs(User::factory()->create())
             ->getJson('/api/user')
             ->assertSuccessful()
-            ->assertJsonStructure(['id', 'name', 'email']);
+            ->assertJsonStructure(['id', 'user_name', 'email']);
     }
 
     /** @test */

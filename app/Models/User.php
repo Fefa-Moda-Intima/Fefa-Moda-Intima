@@ -20,10 +20,13 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
      *
      * @var array
      */
+    
+    /*Os atributos que podem ser pegos e setados*/
     protected $fillable = [
-        'name',
+        'user_name',
         'email',
         'password',
+        'role_id'
     ];
 
     /**
@@ -112,5 +115,10 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

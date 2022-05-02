@@ -22,7 +22,7 @@ class RegisterTest extends DuskTestCase
         $this->browse(function ($browser) {
             $browser->visit(new Register)
                 ->submit([
-                    'name' => 'Test User',
+                    'user_name' => 'Test User',
                     'email' => 'test@test.app',
                     'password' => 'password',
                     'password_confirmation' => 'password',
@@ -39,7 +39,7 @@ class RegisterTest extends DuskTestCase
         $this->browse(function ($browser) use ($user) {
             $browser->visit(new Register)
                 ->submit([
-                    'name' => 'Test User',
+                    'user_name' => 'Test User',
                     'email' => $user->email,
                     'password' => 'password',
                     'password_confirmation' => 'password',
