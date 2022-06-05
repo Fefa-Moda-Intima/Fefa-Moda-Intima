@@ -9,8 +9,8 @@ class DevController extends Controller
 {
     public function show()
     {
-        $devs = Dev::get()->toJson(JSON_PRETTY_PRINT);
-        return response($devs, 200);
+        $devs = Dev::all();
+        return $this->successResponse($devs);
     }
 
     public function detail($id)
@@ -37,6 +37,6 @@ class DevController extends Controller
     public function destroy($id)
     {
         Dev::findOrFail($id)->delete();
-        return response()->json(["msg" => "Dev deletado com sucesso"], 200);
+        return response()->json(["msg" => "Dev deletado com sucesso!"], 200);
     }
 }

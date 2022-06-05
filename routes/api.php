@@ -25,35 +25,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Roles*/ 
-Route::post('auth/role', [RoleController::class, 'register']);
-
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('logout', [LoginController::class, 'logout']);
+    Route::post('auth/logout', [LoginController::class, 'logout']);
     Route::get('user', [UserController::class, 'current']);
     Route::patch('settings/profile', [ProfileController::class, 'update']);
     Route::patch('settings/password', [PasswordController::class, 'update']);
 });
 
-/*Devs*/
-Route::get('dev', [DevController::class, 'show']);
-Route::get('dev/{id}', [DevController::class, 'detail']);
-Route::post('dev/register', [DevController::class, 'register']);
-Route::put('dev/update/{id}', [DevController::class, 'update']);
-Route::delete('dev/delete/{id}', [DevController::class, 'destroy']);
-
-/*Products*/ 
-Route::get('product', [ProductController:: class, 'show']);
-Route::get('product/{id}', [ProductController:: class, 'detail']);
-Route::post('product/register', [ProductController:: class, 'register']);
-Route::put('product/update/{id}', [ProductController:: class, 'update']);
-Route::delete('product/delete/{id}', [ProductController:: class, 'destroy']);
-Route::post('product/addImage/{id}', [ProductController:: class, 'addImage']);
-
+Route::group(['middleware'=>['auth:api','adm:api']], function(){
+    /*Roles*/ 
+    Route::post('auth/role', [RoleController::class, 'register']);
+    
+    /*Products*/
+    Route::post('product', [ProductController:: class, 'register']);
+    Route::put('product/{id}', [ProductController:: class, 'update']);
+    Route::delete('product/{id}', [ProductController:: class, 'destroy']);
+    Route::post('product/addImage/{id}', [ProductController:: class, 'addImage']);
+});
 
 Route::group(['middleware' => 'guest:api'], function () {
-    Route::post('login', [LoginController::class, 'login']);
-    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('auth/login', [LoginController::class, 'login']);
+    Route::post('auth/user', [RegisterController::class, 'register']);
+    Route::post('user/complements/{id}', [UserController::class, 'registerComplements']);
 
     Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
     Route::post('password/reset', [ResetPasswordController::class, 'reset']);
@@ -63,5 +56,16 @@ Route::group(['middleware' => 'guest:api'], function () {
 
     Route::post('oauth/{driver}', [OAuthController::class, 'redirect']);
     Route::get('oauth/{driver}/callback', [OAuthController::class, 'handleCallback'])->name('oauth.callback');
+
+    /*Devs*/
+    Route::get('dev', [DevController::class, 'show']);
+    Route::get('dev/{id}', [DevController::class, 'detail']);
+    Route::post('dev/register', [DevController::class, 'register']);
+    Route::put('dev/update/{id}', [DevController::class, 'update']);
+    Route::delete('dev/delete/{id}', [DevController::class, 'destroy']);
+
+    /*Products*/ 
+    Route::get('product', [ProductController:: class, 'show']);
+    Route::get('product/{id}', [ProductController:: class, 'detail']);
 });
 

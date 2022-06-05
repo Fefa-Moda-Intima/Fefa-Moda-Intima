@@ -19,6 +19,7 @@
     "laravel/tinker": "^2.6",
     "laravel/ui": "^3.3",
     "nao-pon/flysystem-google-drive": "~1.1",
+    "nesbot/carbon": "^2.58",
     "tymon/jwt-auth": "dev-develop"
   },
   "require-dev": {

@@ -6,8 +6,9 @@ use App\Exceptions\VerifyEmailException;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
@@ -26,13 +27,15 @@ class LoginController extends Controller
      */
     protected function attemptLogin(Request $request): bool
     {
+        
         $token = $this->guard()->attempt($this->credentials($request));
-
-        if (! $token) {
+        
+        if (!$token) {
             return false;
         }
-
+        
         $user = $this->guard()->user();
+
         if ($user instanceof MustVerifyEmail && ! $user->hasVerifiedEmail()) {
             return false;
         }
@@ -47,15 +50,29 @@ class LoginController extends Controller
      */
     protected function sendLoginResponse(Request $request)
     {
+        $user = $this->guard()->user();
+
+        if($request->header('type') == null)
+        {
+            return $this->errorResponse("Local de emissão não informado!", 400);
+        }
+
+        if($this->isApp($request) && !$this->isAdm()){
+            return $this->errorResponse("Usuário não tem permissões para acessar o aplicativo!", 403);
+        }
+
         $this->clearLoginAttempts($request);
 
         $token = (string) $this->guard()->getToken();
-        $expiration = $this->guard()->getPayload()->get('exp');
+        return $this->responseWithToken($token);
+       
+    }
 
+    protected function responseWithToken($token){
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $expiration - time(),
+            'expires_in' => Carbon::now()->addSeconds($this->guard()->getPayload()->get('exp') - time()),
         ]);
     }
 
@@ -70,9 +87,10 @@ class LoginController extends Controller
             throw VerifyEmailException::forUser($user);
         }
 
-        throw ValidationException::withMessages([
-            $this->username() => [trans('auth.failed')],
-        ]);
+        return $this->errorResponse(trans('auth.failed'), 400);
+        // throw ValidationException::withMessages([
+        //     $this->username() => [trans('auth.failed')],
+        // ]);
     }
 
     /**

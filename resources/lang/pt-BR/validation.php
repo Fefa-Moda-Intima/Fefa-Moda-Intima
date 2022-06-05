@@ -173,7 +173,7 @@ return [
         'text'                  => 'texto',
         'time'                  => 'hora',
         'title'                 => 'título',
-        'username'              => 'usuário',
+        'user_name'              => 'nome do usuário',
         'year'                  => 'ano',
         'email'                 => 'e-mail',
         'remember'              => 'lembrar-me',

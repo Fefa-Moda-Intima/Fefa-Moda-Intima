@@ -4,16 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 
-class Dev extends Model//, MustVerifyEmail
+class Phone extends Model
 {
-    use Notifiable,
-        HasFactory;
-        
-    protected $dates = ['created_at', 'updated_at']; 
+    use Notifiable, HasFactory;
+    
     protected $guarded = []; 
-
 }

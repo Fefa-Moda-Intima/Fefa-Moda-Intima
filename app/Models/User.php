@@ -6,7 +6,6 @@ use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -26,7 +25,8 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
         'user_name',
         'email',
         'password',
-        'role_id'
+        'role_id',
+        'type'
     ];
 
     /**
@@ -37,6 +37,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     protected $hidden = [
         'password',
         'remember_token',
+        'role_id',
     ];
 
     /**
@@ -66,7 +67,7 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     {
         return vsprintf('https://www.gravatar.com/avatar/%s.jpg?s=200&d=%s', [
             md5(strtolower($this->email)),
-            $this->name ? urlencode("https://ui-avatars.com/api/$this->name") : 'mp',
+            $this->user_name ? urlencode("https://ui-avatars.com/api/$this->user_name") : 'mp',
         ]);
     }
 
@@ -120,5 +121,15 @@ class User extends Authenticatable implements JWTSubject //, MustVerifyEmail
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function phones()
+    {
+        return $this->hasMany(Phone::class);
+    }
+
+    public function adresses()
+    {
+        return $this->hasMany(Address::class);
     }
 }
